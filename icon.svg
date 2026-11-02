@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9a9e"/>
+      <stop offset="1" stop-color="#fecfef"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- canasta -->
+  <rect x="136" y="300" width="240" height="130" rx="28" fill="#ffd6e8" stroke="#ff69b4" stroke-width="10"/>
+  <!-- orejas -->
+  <path d="M158 290 L170 170 L238 262 Z" fill="#fff4e0" stroke="#e89b6b" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M354 290 L342 170 L274 262 Z" fill="#fff4e0" stroke="#e89b6b" stroke-width="9" stroke-linejoin="round"/>
+  <!-- cara -->
+  <ellipse cx="256" cy="285" rx="125" ry="88" fill="#fff4e0" stroke="#e89b6b" stroke-width="9"/>
+  <!-- ojos -->
+  <circle cx="212" cy="278" r="12" fill="#4a2c2a"/>
+  <circle cx="300" cy="278" r="12" fill="#4a2c2a"/>
+  <!-- nariz y boca -->
+  <circle cx="256" cy="304" r="9" fill="#ff8fab"/>
+  <path d="M232 322 Q244 336 256 322 Q268 336 280 322" fill="none" stroke="#4a2c2a" stroke-width="6" stroke-linecap="round"/>
+  <!-- mejillas -->
+  <ellipse cx="176" cy="312" rx="20" ry="12" fill="#ff7896" opacity=".45"/>
+  <ellipse cx="336" cy="312" rx="20" ry="12" fill="#ff7896" opacity=".45"/>
+  <!-- moñito -->
+  <path d="M340 196 L396 160 L396 232 Z" fill="#9d4edd" stroke="#5a189a" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M340 196 L284 160 L284 232 Z" fill="#9d4edd" stroke="#5a189a" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="340" cy="196" r="17" fill="#c77dff" stroke="#5a189a" stroke-width="6"/>
+</svg>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ff8fc7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>GamersCat</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="stage" data-view="menu">
+  <canvas id="game" width="360" height="540"></canvas>
+  <canvas id="rc" width="360" height="540"></canvas>
+
+  <div id="rc-hud">
+    <div class="hrow">
+      <div class="pill" id="rc-lives"></div>
+      <button class="round" id="rc-pause" aria-label="Pausa"></button>
+    </div>
+    <div class="hrow">
+      <div class="hgroup">
+        <div class="pill" id="rc-name">Nv 1</div>
+        <div class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffc400" stroke="#c77700" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="none" stroke="#c77700" stroke-width="1.5" opacity=".6"/></svg><b id="rc-coins">0</b></div>
+      </div>
+      <div class="hgroup">
+        <div class="pill">📍 <b id="rc-prog">0%</b></div>
+        <div class="pill">⏱ <b id="rc-time">0:00</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hud">
+    <div class="hrow">
+      <div class="pill score"><span class="lbl">PUNTOS</span><b id="h-score">0</b></div>
+      <button class="round" id="b-pause" aria-label="Pausa">
+        <svg viewBox="0 0 24 24"><rect x="5" y="4" width="5" height="16" rx="1.5" fill="currentColor"/><rect x="14" y="4" width="5" height="16" rx="1.5" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="hrow">
+      <div class="hgroup">
+        <div class="pill" id="h-level">Nv 1</div>
+        <div class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffc400" stroke="#c77700" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="none" stroke="#c77700" stroke-width="1.5" opacity=".6"/></svg><b id="h-coins">0</b></div>
+      </div>
+      <div class="pill" id="h-lives"></div>
+    </div>
+  </div>
+
+  <div id="powers">
+    <div class="pw" id="pw-magnet" style="--c:#e53935">🧲<i><b></b></i></div>
+    <div class="pw" id="pw-shield" style="--c:#1e88e5">🛡️<i><b></b></i></div>
+    <div class="pw" id="pw-slow" style="--c:#8e44ff">⏳<i><b></b></i></div>
+    <div class="pw" id="pw-big" style="--c:#2ecc71">🔝<i><b></b></i></div>
+  </div>
+
+  <div id="toast"></div>
+  <div id="countdown"></div>
+
+  <!-- Menú -->
+  <section class="screen show" id="scr-menu">
+    <div class="corner l"><button class="icon-btn" id="b-help" aria-label="Cómo jugar">?</button></div>
+    <div class="corner r">
+      <button class="icon-btn tg-sound" aria-label="Sonido">🔊</button>
+      <button class="icon-btn tg-music" aria-label="Música">🎵</button>
+    </div>
+    <div class="logo"><span class="l1">Gatita</span><span class="l2">Caza-Dulces</span></div>
+    <div class="row">
+      <span class="chip">🏆 <b id="m-best">0</b></span>
+      <span class="chip">⏱ <b id="m-best-t">0</b></span>
+      <span class="chip">🪙 <b id="m-coins">0</b></span>
+    </div>
+    <button class="btn big" id="b-classic">▶ Jugar</button>
+    <button class="btn alt" id="b-time">⏱ Contrarreloj</button>
+    <button class="btn green" id="b-rc">🐱 Run Cat · Aventura</button>
+    <div class="row">
+      <button class="btn ghost sm" id="b-shop">🛍️ Tienda</button>
+      <button class="btn ghost sm" id="b-ach">🏅 Logros</button>
+      <button class="btn ghost sm" id="b-board">🏆 Récords</button>
+    </div>
+  </section>
+
+  <!-- Tienda -->
+  <section class="screen top" id="scr-shop">
+    <div class="top-row"><button class="btn ghost sm" data-back>← Volver</button><span class="chip">🪙 <b id="s-coins">0</b></span></div>
+    <div class="h2">Tienda</div>
+    <div class="tabs"><button class="tab on" data-tab="skin">Gatitas</button><button class="tab" data-tab="acc">Accesorios</button></div>
+    <div class="scroll"><div class="grid" id="shop-grid"></div></div>
+  </section>
+
+  <!-- Logros -->
+  <section class="screen top" id="scr-ach">
+    <div class="top-row"><button class="btn ghost sm" data-back>← Volver</button><span class="chip" id="a-count">0/0</span></div>
+    <div class="h2">Logros</div>
+    <div class="scroll"><div class="list" id="ach-list"></div></div>
+  </section>
+
+  <!-- Récords -->
+  <section class="screen top" id="scr-board">
+    <div class="top-row"><button class="btn ghost sm" data-back>← Volver</button></div>
+    <div class="h2">Mejores partidas</div>
+    <div class="tabs"><button class="tab on" data-btab="classic">Clásico</button><button class="tab" data-btab="time">Contrarreloj</button></div>
+    <div class="scroll"><div class="list" id="board-list"></div></div>
+  </section>
+
+  <!-- Ayuda -->
+  <section class="screen top" id="scr-help">
+    <div class="top-row"><button class="btn ghost sm" data-back>← Volver</button></div>
+    <div class="h2">Cómo jugar</div>
+    <div class="muted">Arrastra el dedo, usa ◀ ▶ o las teclas A / D. Cada 5 dulces seguidos multiplican tus puntos. Si dejas caer un dulce, pierdes el combo.</div>
+    <div class="scroll"><div class="list" id="help-list"></div></div>
+  </section>
+
+  <!-- Pausa -->
+  <section class="screen" id="scr-pause">
+    <div class="h2">Pausa</div>
+    <button class="btn big" id="p-resume">▶ Continuar</button>
+    <div class="row">
+      <button class="btn ghost sm" id="p-restart">↻ Reiniciar</button>
+      <button class="btn ghost sm" id="p-menu">⌂ Menú</button>
+    </div>
+    <div class="row">
+      <button class="icon-btn tg-sound" aria-label="Sonido">🔊</button>
+      <button class="icon-btn tg-music" aria-label="Música">🎵</button>
+    </div>
+  </section>
+
+  <!-- Fin de partida -->
+  <section class="screen" id="scr-over">
+    <div class="h2" id="o-title">¡Juego terminado!</div>
+    <div class="score-big" id="o-score">0</div>
+    <div class="badge" id="o-new" style="display:none">🏆 ¡Nuevo récord!</div>
+    <div class="stats">
+      <div class="stat"><b id="o-level">1</b><small>NIVEL</small></div>
+      <div class="stat"><b id="o-combo">0</b><small>MEJOR COMBO</small></div>
+      <div class="stat"><b id="o-candies">0</b><small>DULCES</small></div>
+      <div class="stat"><b id="o-coins">0</b><small>MONEDAS 🪙</small></div>
+    </div>
+    <div class="muted" id="o-bonus"></div>
+    <button class="btn big" id="o-again">Jugar de nuevo</button>
+    <div class="row">
+      <button class="btn ghost sm" id="o-share">📤 Compartir</button>
+      <button class="btn ghost sm" id="o-menu">⌂ Menú</button>
+    </div>
+  </section>
+
+  <!-- Run Cat: niveles -->
+  <section class="screen top" id="scr-rc-select">
+    <div class="top-row"><button class="btn ghost sm" data-back>← Volver</button><span class="chip">🪙 <b id="rc-coins-sel">0</b></span></div>
+    <div class="h2">🐱 Run Cat</div>
+    <div class="muted">Corre y salta, aplasta enemigos y llega a la bandera 🚩. ¡5 mundos distintos! Completa cada uno para desbloquear el siguiente.</div>
+    <div class="scroll"><div class="list" id="rc-levels"></div></div>
+  </section>
+
+  <!-- Run Cat: pausa -->
+  <section class="screen" id="scr-rc-pause">
+    <div class="h2">Pausa</div>
+    <button class="btn big" id="rcp-resume">▶ Continuar</button>
+    <div class="row">
+      <button class="btn ghost sm" id="rcp-restart">↻ Reiniciar</button>
+      <button class="btn ghost sm" id="rcp-levels">🗺️ Niveles</button>
+      <button class="btn ghost sm" id="rcp-menu">⌂ Menú</button>
+    </div>
+    <div class="row">
+      <button class="icon-btn tg-sound" aria-label="Sonido">🔊</button>
+      <button class="icon-btn tg-music" aria-label="Música">🎵</button>
+    </div>
+  </section>
+
+  <!-- Run Cat: nivel superado -->
+  <section class="screen" id="scr-rc-win">
+    <div class="h2" id="rw-title">¡Nivel superado!</div>
+    <div id="rw-stars"></div>
+    <div class="stats">
+      <div class="stat"><b id="rw-coins">0/0</b><small>MONEDAS</small></div>
+      <div class="stat"><b id="rw-time">0:00</b><small>TIEMPO</small></div>
+      <div class="stat"><b id="rw-bonus">+0</b><small>BONUS</small></div>
+      <div class="stat"><b id="rw-bank">+0</b><small>GANASTE</small></div>
+    </div>
+    <div class="muted" id="rw-hint"></div>
+    <button class="btn big" id="rw-next">Siguiente ▶</button>
+    <div class="row">
+      <button class="btn ghost sm" id="rw-again">↻ Repetir</button>
+      <button class="btn ghost sm" id="rw-levels">🗺️ Niveles</button>
+    </div>
+  </section>
+
+  <!-- Run Cat: derrota -->
+  <section class="screen" id="scr-rc-over">
+    <div class="h2" id="ro-title">¡Ay!</div>
+    <div class="stats">
+      <div class="stat"><b id="ro-coins">0</b><small>MONEDAS</small></div>
+      <div class="stat"><b id="ro-bank">+0</b><small>GUARDADAS</small></div>
+    </div>
+    <div class="muted">Te quedas con la mitad de las monedas que juntaste.</div>
+    <button class="btn big" id="ro-again">↻ Reintentar</button>
+    <button class="btn ghost sm" id="ro-levels">🗺️ Niveles</button>
+  </section>
+</div>
+
+<div id="controls">
+  <button class="pad" id="left-btn" aria-label="Izquierda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="pad" id="right-btn" aria-label="Derecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="pad jump" id="jump-btn" aria-label="Saltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15l7-8 7 8"/><path d="M5 21l7-8 7 8" opacity=".55"/></svg></button>
+</div>
+
+<script src="js/caza-dulces.js"></script>
+<script src="js/runcat/levels.js"></script>
+<script src="js/runcat/draw.js"></script>
+<script src="js/runcat/game.js"></script>
+<script src="js/runcat/ui.js"></script>
+</body>
+</html>

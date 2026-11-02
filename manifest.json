@@ -1,0 +1,16 @@
+{
+  "name": "Gatita Caza-Dulces",
+  "short_name": "Caza-Dulces",
+  "description": "Atrapa fresas, lazos y estrellas. ¡Esquiva las bombas!",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffe3f0",
+  "theme_color": "#ff69b4",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
